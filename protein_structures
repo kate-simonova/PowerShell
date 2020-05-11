@@ -1,0 +1,13 @@
+#!/bin/bash
+# this script reads data about the structures of proteins
+read -p "Zadejte desetinne cislo: " cislo
+while IFS=":" read struktura nazev rozliseni autori rok ; do
+    if [[ $struktura = $2 ]] ; then
+        sum=$(awk "BEGIN {print $rozliseni+$cislo; exit}")
+        echo "struktura =" $struktura
+        echo "nazev =" $nazev
+        echo "rozliseni =" $rozliseni + $cislo "=" $sum
+        echo "autori =" $(echo "$autori" | tr -s '[:lower:]' '[:upper:]')
+        year="${rok:0:4}"; echo "rok =" "${year}"
+    fi
+done <"$1

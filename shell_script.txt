@@ -1,0 +1,127 @@
+PSH ukol #13 L14
+1) Napište skript, který nakreslí pravoúhlý trojúhelník. Uživatelem zadaná délka je shodná pro obě odvěsny trojúhelníka. (1 bod)
+(tip: option -n příkazu echo zajistí výpis textu bez zalomení řádku)
+#!/bin/bash
+read -p "Zadejte delku odvesny: " delka
+
+if (( $delka <= 1 )); then 
+	echo "Minimalni delka by mela byt vice nez 1" 
+	exit
+fi
+
+echo "*"
+for (( i=1; i<delka-1; i++ )); do
+	echo -n "*"
+	for (( j=1; j<i; j++ )); do
+        	echo -n " "
+	done
+	echo "*"
+done
+
+for (( i=1; i<=delka; i++ )); do
+        echo -n "*"
+done
+echo ""
+
+
+2)Napište skript, který pro zadané číslo n vypíše řadu celých čísel od jedné až do čísla n,
+přičemž vynechá čísla, která jsou dělitelná číslem 3 nebo 7. (1 bod)
+#!/bin/bash
+
+read -p "Zadejte cislo: " cislo
+
+for (( i=1; i<=cislo; i++ )); do
+	if  (( $i % 3 == 0 )); then
+		continue
+	elif (( $i % 7 == 0)); then
+		continue
+	else
+		echo -n "$i "
+	fi
+done 
+echo ""
+
+3) Napište skript, který pro zadané číslo n (1 <= n <= 20) vypíše matici součinů podle níže uvedéno vzoru. (1 bod)
+
+#!/bin/bash
+
+read -p "Zadejte cislo: " n
+#funkce ktera se pousti pokud 1<=n<=20
+fun ()
+{
+echo -n "# "
+for (( i=1; i <= $n; i++ )); do
+	echo -n  "$i " 
+done 
+echo ""
+
+for (( i=1; i <= $n; i++ )); do
+	echo -n "$i "
+	for (( j=1; j <= $n; j++ )); do
+		echo -n $(( $i*$j )) ""
+	done
+	echo ""  
+done
+echo ""
+}
+
+# zacatek programu
+if (( $n <= 20 && $n >= 1 )); then
+        fun "$n"
+fi
+
+4)  Napište skript, který pro zadanou řadu celých kladných čísel zjistí,
+zda-li se součin čísel na lichých pozicích rovná součinu čísel na sudých pozicích. 
+
+#!/bin/bash
+read -p "Zadejte ciselnou radu : " -a array
+
+# spocitam kolik cisel bylo zadano
+arraylength=${#array[@]}
+
+lichecisla=1
+sudecisla=1
+
+# pouziju for loop abych vedela ktere prvky jsou na lichych pozicich a ktere jsou na sudych
+for (( i=1; i<=${arraylength}; i++ )); do
+	if [ $(($i % 2)) -eq 0 ]; then
+		sudecisla=$(( sudecisla * ${array[$i-1]} ))
+	else
+		lichecisla=$(( lichecisla * ${array[$i-1]} ))
+	fi
+done
+
+if [ $arraylength -eq 1 ]; then
+	sudecisla=0
+fi
+
+if [ $arraylength -eq 0 ]; then
+	echo "Nezadali jste zadnou hodnotu"
+	exit
+fi
+
+if [[ $lichecisla == $sudecisla && $arraylength > 1 ]]
+then
+	echo "ANO"
+else
+	echo "NE"
+fi
+
+echo "Soucin sudych cisel: " $sudecisla
+echo "Soucin lichych cisel: " $lichecisla
+
+5) Napište skript, který vyhodnotí typ zadaného argumentu. Skript přiřadí argument do jedné ze tří možných kategorií - slovo
+#!/bin/bash
+
+echo $1 | grep -oqE "^[0-9]+$"; val=$?
+if [[ $val == 0 ]]; then
+        echo "$1 = cislo"
+else
+	echo $1 | grep -oqE "^[[:alpha:]]+$"; val=$?
+	if [[ $val == 0 ]]; then
+        	echo "$1 = slovo"
+	else
+		echo "$1 = ostatni"
+	fi
+fi
+  
